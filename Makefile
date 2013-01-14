@@ -4,6 +4,7 @@
 NAMESPACE = hello.world
 COMPILATION_LEVEL = WHITESPACE_ONLY
 FORMATTING = PRETTY_PRINT
+GSS_RENAME = NONE
 
 SRC_DIR = src
 OUT_DIR = build
@@ -13,7 +14,7 @@ SOY_COMPILER = ../closure-templates/build/SoyToJsSrcCompiler.jar
 SOY_FLAGS = --cssHandlingScheme GOOG --useGoogIsRtlForBidiGlobalDir --shouldProvideRequireSoyNamespaces --shouldGenerateGoogMsgDefs 
 
 GSS_COMPILER = ../closure-stylesheets/build/closure-stylesheets.jar
-GSS_FLAGS = --pretty-print --output-renaming-map-format CLOSURE_COMPILED --rename CLOSURE
+GSS_FLAGS = --pretty-print --output-renaming-map-format CLOSURE_COMPILED --rename $(GSS_RENAME)
 
 SOY_FILES = $(wildcard $(SRC_DIR)/*.soy)
 GEN_SOY_JS_FILES = $(patsubst $(SRC_DIR)/%, $(GEN_DIR)/%.js, $(SOY_FILES))
