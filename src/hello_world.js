@@ -1,6 +1,7 @@
 goog.provide('hello.world');
 
 goog.require('goog.dom');
+goog.require('goog.events');
 goog.require('goog.soy.Renderer');
 goog.require('goog.ui.Component');
 
@@ -37,9 +38,12 @@ hello.world.HelloWorld.prototype.createDom = function() {
 
 
 /**
- * Says hi.
+ * Renders when the DOM has loaded.
  */
-function sayHi() {
-    var helloWorld = hello.world.HelloWorld.getInstance();
-    helloWorld.render(goog.dom.getElement('hello-world'));
-}
+hello.world.HelloWorld.prototype.onLoad = function() {
+    this.render();
+};
+
+goog.events.listen(goog.global, goog.events.EventType.LOAD,
+		   goog.bind(hello.world.HelloWorld.prototype.onLoad,
+			     hello.world.HelloWorld.getInstance()));
