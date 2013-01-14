@@ -31,7 +31,7 @@ OUT_GSS_FILES = $(GSS_RENAMING_MAP) $(GSS_CSS)
 
 CLOSURE_COMPILER = ../closure-compiler/build/compiler.jar
 CLOSURE_BUILDER = ../closure-library/closure/bin/build/closurebuilder.py
-CLOSURE_ROOTS = ../closure-library $(GEN_DIR)
+CLOSURE_ROOTS = ../closure-library $(GEN_DIR) third_party/blockly/core
 CLOSURE_ROOT_FLAGS = $(foreach root, $(CLOSURE_ROOTS), --root $(root))
 CLOSURE_FLAGS = -o compiled -f --compilation_level -f $(COMPILATION_LEVEL) -f --formatting -f $(FORMATTING) 
 
