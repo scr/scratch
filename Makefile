@@ -1,10 +1,11 @@
 ##############################
 # Definitions
 ##############################
-NAMESPACE = hello.world
+NAMESPACE = scratch
 COMPILATION_LEVEL = WHITESPACE_ONLY
 FORMATTING = PRETTY_PRINT
 GSS_RENAME = NONE
+DEBUG_FLAG = -f --define -f goog.DEBUG=false
 
 SRC_DIR = src
 OUT_DIR = build
@@ -24,7 +25,7 @@ GEN_RAW_JS_FILES = $(patsubst $(SRC_DIR)/%, $(GEN_DIR)/%, $(RAW_JS_FILES))
 
 GSS_FILES = $(wildcard $(SRC_DIR)/*.gss)
 GSS_RENAMING_MAP = $(OUT_DIR)/renaming_map.js
-GSS_CSS = $(OUT_DIR)/hello_world.css
+GSS_CSS = $(OUT_DIR)/scratch.css
 GEN_GSS_JS_FILES =
 OUT_GSS_FILES = $(GSS_RENAMING_MAP) $(GSS_CSS)
 
@@ -75,4 +76,4 @@ $(GSS_CSS): $(GSS_FILES) $(GSS_COMPILER)
 	java -jar $(GSS_COMPILER) $(GSS_FLAGS) --output-renaming-map $(GSS_RENAMING_MAP) --output-file $(GSS_CSS) $(GSS_FILES) || rm $(OUT_GSS_FILES)
 
 $(OUT_JS_FILES): $(GEN_FILES) $(CLOSURE_COMPILER)
-	python $(CLOSURE_BUILDER) -c $(CLOSURE_COMPILER) $(CLOSURE_ROOT_FLAGS) $(CLOSURE_FLAGS) --namespace $(NAMESPACE) --output_file $@ || rm $@
+	python $(CLOSURE_BUILDER) $(DEBUG_FLAG) -c $(CLOSURE_COMPILER) $(CLOSURE_ROOT_FLAGS) $(CLOSURE_FLAGS) --namespace $(NAMESPACE) --output_file $@ || rm $@
