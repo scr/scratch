@@ -40,10 +40,12 @@ hello.world.HelloWorld.prototype.createDom = function() {
 /**
  * Renders when the DOM has loaded.
  */
-hello.world.HelloWorld.prototype.onLoad = function() {
-    this.render();
+hello.world.HelloWorld.prototype.addLoadListener = function() {
+    this.getHandler().listen(
+	goog.global, goog.events.EventType.LOAD, function() {
+	    this.render();
+	});
 };
 
-goog.events.listen(goog.global, goog.events.EventType.LOAD,
-		   goog.bind(hello.world.HelloWorld.prototype.onLoad,
-			     hello.world.HelloWorld.getInstance()));
+// Load the load listener.
+hello.world.HelloWorld.getInstance().addLoadListener();
