@@ -42,7 +42,7 @@ hello.world.HelloWorld.prototype.createDom = function() {
  */
 hello.world.HelloWorld.prototype.addLoadListener = function() {
     this.getHandler().listen(
-	goog.global, goog.events.EventType.LOAD, function() {
+	goog.global, goog.events.EventType.LOAD, function(e) {
 	    this.render();
 	});
 };
