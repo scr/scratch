@@ -45,6 +45,7 @@ goog.require('Blockly.Language.logic');
 goog.require('Blockly.messages.en');
 
 goog.require('goog.functions');
+goog.require('goog.debug.Logger');
 goog.require('scratch.blockly.templates');
 goog.require('scratch.SoyComponent');
 
@@ -57,6 +58,12 @@ goog.require('scratch.SoyComponent');
  */
 scratch.Blockly = function(opt_domHelper) {
     goog.base(this, opt_domHelper);
+
+    /**
+     * @type {goog.debug.Logger}
+     * @private
+     */
+    this.logger_ = goog.debug.Logger.getLogger('scratch.Root');
 };
 goog.inherits(scratch.Blockly, scratch.SoyComponent);
 
@@ -70,5 +77,6 @@ scratch.Blockly.prototype.getTemplate = goog.functions.constant(
 scratch.Blockly.prototype.enterDocument = function() {
     goog.base(this, 'enterDocument');
 
+    this.logger_.warning('calling Blockly.inject on ' + this.getElement());    
     Blockly.inject(this.getElement());
 };

@@ -1,3 +1,38 @@
-.scratch-root-header {
+@defmixin ridgeborder() {
+  border-style: ridge;
+  border-width: medium;
+  margin: 2px;
+}
+
+.scratch-root h1 {
   background-color: #F0F0F0;
+}
+
+.scratch-root > div {
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+}
+
+.scratch-root-left {
+  -webkit-box-flex: 2;
+}
+
+.scratch-root-left > * {
+  @mixin ridgeborder();
+  padding: 5px;
+  -webkit-box-flex: 1;
+}
+
+.scratch-root-right {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-flex: 1;
+}
+
+.scratch-root-right > * {
+  @mixin ridgeborder();
+  -webkit-box-flex: 1;
+}
+
+.scratch-stage {
 }

@@ -7,6 +7,7 @@ goog.provide('scratch.Root');
 goog.require('goog.functions');
 goog.require('goog.debug.FancyWindow');
 goog.require('goog.debug.Logger');
+goog.require('goog.dom.classes');
 goog.require('scratch.Blockly');
 goog.require('scratch.SoyComponent');
 goog.require('scratch.SprintPalette');
@@ -45,15 +46,26 @@ scratch.Root.prototype.getTemplate = goog.functions.constant(
 
 
 /** @override */
-scratch.Root.prototype.decorateInternal = function(element) {
-    this.logger_.warning('calling super decorateInternal');
-    goog.base(this, 'decorateInternal', element);
+scratch.Root.prototype.createDom = function() {
+    this.logger_.warning('calling super createDom');
+    var element = goog.base(this, 'createDom');
 
     this.logger_.warning('adding Blockly');
 
-    this.addChild(new scratch.Blockly(), true);
-    this.addChild(new scratch.Stage(), true);
-    this.addChild(new scratch.SprintPalette(), true);
+    var body = new goog.ui.Component(this.getDomHelper());
+    this.addChild(body, true);
+    var left = new goog.ui.Component(this.getDomHelper());
+    body.addChild(left, true);
+    goog.dom.classes.add(left.getElement(), goog.getCssName('scratch-root-left'));
+    var right = new goog.ui.Component(this.getDomHelper());
+    body.addChild(right, true);
+    goog.dom.classes.add(right.getElement(), goog.getCssName('scratch-root-right'));
+
+    left.addChild(new scratch.Blockly(), true);
+    right.addChild(new scratch.Stage(), true);
+    right.addChild(new scratch.SprintPalette(), true);
+
+    return element;
 };
 
 

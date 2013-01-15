@@ -41,22 +41,15 @@ scratch.SoyComponent.prototype.getTemplate = goog.abstractMethod;
 
 /** @override */
 scratch.SoyComponent.prototype.createDom = function() {
-    this.decorateInternal(this.getDomHelper().createElement('div'));
-};
-
-
-/** @override */
-scratch.SoyComponent.prototype.decorateInternal = function(element) {
-    this.setElementInternal(element);
-    this.soyRenderer_.renderElement(
-	element, this.getTemplate(), this.getContext(element));
+    this.setElementInternal(this.soyRenderer_.renderAsElement(
+	this.getTemplate(), this.getContext()));
 };
 
 
 /**
- * @param {Element} element The element to get context for.
+ * @param {Element=} opt_element The element to get context for.
  * @return {!Object}
  */
-scratch.SoyComponent.prototype.getContext = function(element) {
+scratch.SoyComponent.prototype.getContext = function(opt_element) {
     return this.context_;
 };
