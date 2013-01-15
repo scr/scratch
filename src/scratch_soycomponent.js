@@ -41,7 +41,7 @@ scratch.SoyComponent.prototype.getTemplate = goog.abstractMethod;
 
 /** @override */
 scratch.SoyComponent.prototype.createDom = function() {
-    this.decorate(this.getDomHelper().createElement('div'));
+    this.decorateInternal(this.getDomHelper().createElement('div'));
 };
 
 

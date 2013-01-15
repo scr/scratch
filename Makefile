@@ -29,16 +29,20 @@ GSS_CSS = $(OUT_DIR)/scratch.css
 GEN_GSS_JS_FILES =
 OUT_GSS_FILES = $(GSS_RENAMING_MAP) $(GSS_CSS)
 
+BLOCKLY_DIR = third_party/blockly
+
 CLOSURE_COMPILER = ../closure-compiler/build/compiler.jar
 CLOSURE_BUILDER = ../closure-library/closure/bin/build/closurebuilder.py
-CLOSURE_ROOTS = ../closure-library $(GEN_DIR) third_party/blockly/core
+CLOSURE_ROOTS = ../closure-library $(GEN_DIR) $(BLOCKLY_DIR)
 CLOSURE_ROOT_FLAGS = $(foreach root, $(CLOSURE_ROOTS), --root $(root))
 CLOSURE_FLAGS = -o compiled -f --compilation_level -f $(COMPILATION_LEVEL) -f --formatting -f $(FORMATTING) 
 
 GEN_JS_FILES = $(GEN_SOY_JS_FILES) $(GEN_RAW_JS_FILES) $(GEN_GSS_JS_FILES)
 GEN_FILES = $(GEN_JS_FILES)
 OUT_JS_FILES = $(OUT_DIR)/$(subst .,_,$(NAMESPACE)).js
-OUT_FILES = $(OUT_JS_FILES) $(OUT_GSS_FILES)
+OUT_COPY_FILES = $(patsubst $(SRC_DIR)/%, $(OUT_DIR)/%, $(wildcard $(SRC_DIR)/*.html))
+OUT_BLOCKLY_COPY_FILES = $(patsubst $(BLOCKLY_DIR)/%, $(OUT_DIR)/%, $(wildcard $(BLOCKLY_DIR)/media/*))
+OUT_FILES = $(OUT_JS_FILES) $(OUT_GSS_FILES) $(OUT_COPY_FILES) $(OUT_BLOCKLY_COPY_FILES)
 
 COMPILERS = $(SOY_COMPILER) $(CLOSURE_COMPILER) $(GSS_COMPILER)
 
@@ -60,7 +64,7 @@ $(CLOSURE_COMPILER): ../closure-compiler/src/com/google/javascript/jscomp/*
 $(GSS_COMPILER): ../closure-stylesheets/src/com/google/common/css/*
 	(cd ../closure-stylesheets; ant jar)
 
-$(OUT_DIR) $(GEN_DIR):
+$(OUT_DIR) $(GEN_DIR) $(OUT_DIR)/media:
 	-mkdir $@
 
 $(GEN_SOY_JS_FILES): $(GEN_DIR)/%.js : $(SRC_DIR)/% $(SOY_COMPILER)
@@ -68,6 +72,12 @@ $(GEN_SOY_JS_FILES): $(GEN_DIR)/%.js : $(SRC_DIR)/% $(SOY_COMPILER)
 	perl -pi -e 's/soy/goog.soy/g; s/soydata/soy.data/g' $@ || rm $@
 
 $(GEN_RAW_JS_FILES): $(GEN_DIR)/% : $(SRC_DIR)/%
+	cp $< $@
+
+$(OUT_COPY_FILES): $(OUT_DIR)/% : $(SRC_DIR)/%
+	cp $< $@
+
+$(OUT_BLOCKLY_COPY_FILES): $(OUT_DIR)/media/% : $(BLOCKLY_DIR)/media/% $(OUT_DIR)/media
 	cp $< $@
 
 $(GSS_RENAMING_MAP): $(GSS_CSS)
